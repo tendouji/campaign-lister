@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`render to match snapshot for FilterBar component 1`] = `
+<div
+  className="sc-bdVaJa kgbxHa app-filter"
+>
+  <div
+    className="column search-panel"
+  >
+    Search
+  </div>
+  <div
+    className="column date-panel"
+  >
+    date
+  </div>
+</div>
+`;
