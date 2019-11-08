@@ -1,5 +1,6 @@
 const colors = {
     primary: '#43cadb',
+    secondary: '#595caf',
     white: '#fff',
     black: '#000',
     darkGray: '#666',
@@ -25,6 +26,8 @@ const layout = {
     fontSizeLarge: '1.25rem',
     fontSizeXLarge: '1.5rem',
 
+    headerBarHeight: '4.5rem',
+    footerBarHeight: '2rem',
     filterBarHeight: '4.5rem',
 };
 

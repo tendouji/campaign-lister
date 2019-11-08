@@ -5,6 +5,9 @@ export const config = {
     snackBarLifeSpan: 5000,
     snackBarTransition: 300,
 
+    mediumScreenWidth: '37.5rem',
+    smallScreenWidth: '25rem',
+
     campaignDataLabels: {
         name: 'Name',
         startDate: 'Start Date',

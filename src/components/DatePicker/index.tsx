@@ -29,7 +29,7 @@ class DatePickerInput extends React.PureComponent<DatePickerInputData> {
 }
 
 const DatePickerInputWrapper = styled.button`
-    width: 7rem;
+    width: 6rem;
     padding: ${layout.xSmallGap} ${layout.smallGap};
     border: ${styles.lineStyle};
     font-size: ${layout.fontSizeStandard};
@@ -53,6 +53,18 @@ class DateSelectorBase extends React.Component<DateSelectorProps, any> {
             startDate: dateNow,
             endDate: dateNow,
         };
+    }
+
+    componentDidUpdate(prevProps: any) {
+        const { appState } = this.props;
+        const { dateRange } = appState;
+
+        if(prevProps.appState.dateRange.startDate !== dateRange.startDate) {
+            if(!dateRange.startDate) {
+                // NOTE: startDate is null
+                this.onClearDateRange();
+            }
+        }
     }
 
     onDateFilterClick = (e?: React.MouseEvent | undefined) => {
@@ -98,7 +110,7 @@ class DateSelectorBase extends React.Component<DateSelectorProps, any> {
     };
 
     render() {
-        const { dateNow, startDate, endDate } = this.state;
+        const { startDate, endDate } = this.state;
         const { appState } = this.props;
         const { dateRange } = appState;
 

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { layout, styles } from "../../constants/ui";
 import SearchInput from "../SearchInput";
 import DatePicker from "../DatePicker";
+import {config} from "../../constants/config";
 
 
 export const FilterBar = (): JSX.Element => (
@@ -16,7 +17,8 @@ export const FilterBar = (): JSX.Element => (
     </FilterBarWrapper>
 );
 
-const datePanelWidth: string = '26em';
+const datePanelWidth: string = '23em';
+const smallColPanelWidth: string = '25rem';
 
 const FilterBarWrapper = styled.div`
     display: flex;
@@ -36,5 +38,29 @@ const FilterBarWrapper = styled.div`
     
     & .date-panel {
         width: ${datePanelWidth};
+    }
+    
+    @media screen and (max-width: ${config.mediumScreenWidth}) {
+        display: block;
+        height: auto;
+
+        & .search-panel, 
+        & .date-panel {
+            width: 100%;
+            padding: 0 10%;
+            box-sizing: border-box;
+        }
+                
+        & .search-panel {
+            border-right: 0;
+            border-bottom: ${styles.lineStyle};
+        }
+    }
+    
+    @media screen and (max-width: ${config.smallScreenWidth}) {
+        & .search-panel, 
+        & .date-panel {
+            padding: 0;
+        }
     }
 `;

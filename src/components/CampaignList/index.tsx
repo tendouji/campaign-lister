@@ -9,7 +9,7 @@
 
 import React from 'react';
 import {connect} from 'react-redux';
-import styled from "styled-components";
+import styled, {css, StyledFunction} from "styled-components";
 import ReactPaginate from 'react-paginate';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDotCircle } from "@fortawesome/free-solid-svg-icons/faDotCircle";
@@ -33,7 +33,7 @@ import {
     SnackBarData
 } from '../../models';
 import { config } from "../../constants/config";
-import { beautifyDate, compareObject, convertToCurrency } from "../../helpers";
+import { beautifyDate, convertToCurrency } from "../../helpers";
 
 
 interface StatusDotProps {
@@ -42,10 +42,15 @@ interface StatusDotProps {
 const StatusDot: React.FC<StatusDotProps> = (props) => (
     <StatusDotWrapper className={`status-dot ${props.status}`}>
         <FontAwesomeIcon icon={faDotCircle} />
+        <span>{props.status}</span>
     </StatusDotWrapper>
 );
 
 const StatusDotWrapper = styled.span`
+    & > span { 
+        display: none;
+    }
+
     &.${CampaignStatus.Ongoing} {
         color: ${colors.green};
     }
@@ -57,6 +62,14 @@ const StatusDotWrapper = styled.span`
     &.${CampaignStatus.Upcoming} {
         color: ${colors.yellow};
     }
+    
+    @media screen and (max-width: ${config.smallScreenWidth}) {
+        & > span { 
+            display: inline-block;
+            margin-left: ${layout.xSmallGap};
+            line-height: 1rem;
+        }
+    }    
 `;
 
 
@@ -296,7 +309,10 @@ class CampaignListBase extends React.Component<CampaignListProps, CampaignListSt
                         </div>
                     </div>
                 </CampaignHeaderWrapper>
-                <CampaignTableWrapper className="campaign-table">
+                <CampaignTableWrapper
+                    className="campaign-table"
+                    dataLabels={dataLabels}
+                >
                     <table>
                         <thead>
                             <tr>
@@ -402,7 +418,7 @@ export default CampaignList;
 
 
 
-const indicatorPanelWidth = '13rem';
+const indicatorPanelWidth = '10rem';
 const CampaignHeaderWrapper = styled.div`
     display: flex;
     width: 100%;
@@ -451,7 +467,46 @@ const CampaignHeaderWrapper = styled.div`
             }
         }
     }
+    
+    @media screen and (max-width: ${config.mediumScreenWidth}) {
+        display: block;
+        padding: ${layout.standardGap} ${layout.standardGap} ${layout.smallGap};
+    
+        & .title {
+            width: 100%;
+            margin-bottom: ${layout.largeGap};
+        }
+        
+        & .legend {
+            display: flex;
+            margin: 0 auto;
+            width: 14rem;
+        
+            & .legend-title {
+                width: 3rem;
+                margin-bottom: 0;
+                margin-right: ${layout.xSmallGap};
+            }
+            
+            & .legend-row {
+                display: flex;
+                width: calc(100% - 3rem);
+                justify-content: space-between;
+            }
+        }
+    }
+    
+    @media screen and (max-width: ${config.smallScreenWidth}) {        
+        & .legend {
+            display: none;
+        }
+    }
 `;
+
+
+interface CampaignTableWrapperProps {
+    dataLabels: { [key:string]: string }
+}
 
 const CampaignTableWrapper = styled.div`
     width: 100%;
@@ -472,7 +527,7 @@ const CampaignTableWrapper = styled.div`
         
         & > thead {
             & tr {
-                background-color: ${colors.primary};
+                background-color: ${colors.secondary};
                 
                 & td {
                     color: ${colors.white};
@@ -504,6 +559,45 @@ const CampaignTableWrapper = styled.div`
             font-weight: 700;
         }
     }
+    
+    @media screen and (max-width: ${config.smallScreenWidth}) {
+        padding: 0 ${layout.standardGap} calc(2 * ${layout.standardGap});
+        
+        & > table {
+            & td {
+                display: block;
+                padding: ${layout.xSmallGap} 0;
+                border: 0;
+                text-align: left;
+                
+                ${(props: CampaignTableWrapperProps) => {
+                    const d = props.dataLabels;
+                    return Object.keys(d).map((key, id) => (css`
+                        &:nth-child(${id+1}) {
+                            &:before {
+                                display: inline-block;
+                                width: 7rem;
+                                font-weight: 700;
+                                content: '${d[key]}: ';
+                            }
+                        }
+                    `));
+                }}
+            }
+            
+            & > thead {
+                display: none;
+            }
+            
+            & > tbody {
+                & tr {
+                    display: block;
+                    padding: ${layout.standardGap};
+                    border: ${styles.lineStyle};
+                }
+            }
+        }
+    }    
 `;
 
 const CampaignPaginationWrapper = styled.div`
@@ -521,16 +615,18 @@ const CampaignPaginationWrapper = styled.div`
         justify-content: center;
         
         & > li {
-            width: 3rem;
-            padding: ${layout.standardGap} 0;
-            text-align: center;
-            cursor: pointer;
+            width: 2.5rem;
             
             &:hover {
                 background-color: ${colors.lightGray2};
             }
                 
             & > a {
+                display: block;
+                width: 100%;
+                padding: ${layout.smallGap} 0;
+                text-align: center;
+                cursor: pointer;
                 color: ${colors.primary};
                 outline: 0;
             }
@@ -551,7 +647,6 @@ const CampaignPaginationWrapper = styled.div`
                 }
                 
                 & > a {
-                
                     color: ${colors.lightGray2};
                 }
             }

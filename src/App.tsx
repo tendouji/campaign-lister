@@ -1,11 +1,22 @@
 import React from 'react';
 import { connect } from "react-redux";
+import {
+    CampaignData,
+    DateRangeData,
+    ReducerStateData,
+    SnackBarData
+} from "./models";
+import {
+    setDateRange,
+    setSearchKey,
+    setSnackBarDisplay,
+    storeCampaignData
+} from "./actions";
 import { Header } from "./components/Header";
 import { FilterBar } from "./components/FilterBar";
 import SnackBar from "./components/SnackBar";
-import { CampaignData, ReducerStateData, SnackBarData } from "./models";
-import { setSnackBarDisplay, storeCampaignData } from "./actions";
 import CampaignList from "./components/CampaignList";
+import { Footer } from './components/Footer';
 
 
 declare global {
@@ -22,9 +33,16 @@ class AppBase extends React.Component<any, any> {
     }
 
     storeCampaigns = (data: CampaignData[]) => {
-        console.log('Campaign App: Store campaigns data into redux');
+        console.log('CR8 Campaign: Store campaigns data into redux');
 
-        const { storeCampaignData } = this.props;
+        const {
+            storeCampaignData,
+            setSearchKey,
+            setDateRange
+        } = this.props;
+
+        setSearchKey('');
+        setDateRange({ startDate: null, endDate: null });
         storeCampaignData(data);
     };
 
@@ -39,10 +57,10 @@ class AppBase extends React.Component<any, any> {
 
         return (
             <>
-                <Header title={'Campaign'} />
+                <Header title={'CR8 Campaign'} />
                 <FilterBar />
-
                 <CampaignList />
+                <Footer />
 
                 <SnackBar
                     show={snackBarDisplay.show}
@@ -60,6 +78,8 @@ const mapStateToProps = (state: ReducerStateData) => {
 };
 
 const mapDispatchToProps = (dispatch: any) => ({
+    setSearchKey: (data: string) => dispatch(setSearchKey(data)),
+    setDateRange: (data: DateRangeData) => dispatch(setDateRange(data)),
     storeCampaignData: (data: CampaignData[]) => dispatch(storeCampaignData(data)),
     setSnackBarDisplay: (data: SnackBarData) => dispatch(setSnackBarDisplay(data)),
 });
