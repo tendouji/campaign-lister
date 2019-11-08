@@ -10,7 +10,10 @@ import { ActionData, AppStateData } from "../models";
 const defaultAppState: AppStateData = {
     isLoading: false,
     searchKey: '',
-    dateRange: [],
+    dateRange: {
+        startDate: null,
+        endDate: null,
+    },
     snackBarDisplay: {
         show: false,
         message: ''
@@ -27,10 +30,10 @@ export const appStateReducer = (state = defaultAppState, action: ActionData) => 
         case SET_DATE_RANGE:
             return {
                 ...state,
-                dateRange: [
+                dateRange: {
                     ...state.dateRange,
                     ...action.data
-                ]
+                }
             };
         case SET_IS_LOADING:
             return {

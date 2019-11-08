@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import styled from "styled-components";
-import { colors, layout, styles} from '../../constants/ui';
+import { layout, styles} from '../../constants/ui';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from '@fortawesome/free-solid-svg-icons/faSearch'
 import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes'
@@ -46,7 +46,7 @@ class SearchInputBase extends React.Component<any, SearchInputState> {
 
             if(searchVal.length < config.minSearchLength) {
                 if(!!e) {
-                    // Note: if e doesn't exist, it is called from onChange event
+                    // NOTE: if e doesn't exist, it is called from onChange event
                     const { setSnackBarDisplay } = this.props;
                     setSnackBarDisplay({
                         show: true,

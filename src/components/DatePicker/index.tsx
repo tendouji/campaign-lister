@@ -5,9 +5,10 @@ import DatePicker from "react-datepicker";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarCheck } from '@fortawesome/free-solid-svg-icons/faCalendarCheck'
 import { faArrowsAltH } from '@fortawesome/free-solid-svg-icons/faArrowsAltH'
+import { faTimes } from "@fortawesome/free-solid-svg-icons/faTimes";
 import { colors, layout, styles } from '../../constants/ui';
-import { setSearchKey, setSnackBarDisplay } from "../../actions";
-import { ReducerStateData, SnackBarData } from '../../models';
+import { setSnackBarDisplay, setDateRange } from "../../actions";
+import { DateRangeData, ReducerStateData, SnackBarData } from '../../models';
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -42,8 +43,6 @@ type DateSelectorProps = {
 }
 
 class DateSelectorBase extends React.Component<DateSelectorProps, any> {
-    // private searchKeyRef: React.RefObject<HTMLInputElement>;
-
     constructor(props: DateSelectorProps) {
         super(props);
 
@@ -54,49 +53,55 @@ class DateSelectorBase extends React.Component<DateSelectorProps, any> {
             startDate: dateNow,
             endDate: dateNow,
         };
-
-        // this.searchKeyRef = React.createRef();
     }
 
-    onDateFilterClick = (e: React.MouseEvent) => {
+    onDateFilterClick = (e?: React.MouseEvent | undefined) => {
         const { startDate, endDate } = this.state;
 
         if(startDate > endDate) {
             const { setSnackBarDisplay } = this.props;
             setSnackBarDisplay({
                 show: true,
-                message: 'Start date cannot be earlier than end date.'
+                message: 'Start date cannot be later than end date.'
             });
             return;
         }
 
-
-
-        /*const searchKeyElm = this.searchKeyRef.current;
-        if(!!searchKeyElm) {
-            const searchVal = searchKeyElm.value;
-
-            if(searchVal.length < config.minSearchLength) {
-                const { setSnackBarDisplay } = this.props;
-                setSnackBarDisplay({
-                    show: true,
-                    message: 'Search length is too short.'
-                });
-                return;
-            }
-
-            const { setSearchKey } = this.props;
-            setSearchKey(searchVal);
-        }*/
+        const { setDateRange } = this.props;
+        setDateRange({
+            startDate,
+            endDate,
+        });
     };
 
     setDate = (dateVal: Date, type: string) => {
-        this.setState({ [type]: dateVal });
+        this.setState({ [type]: dateVal }, () => {
+            const { startDate, endDate } = this.state;
+            if(startDate > endDate) {
+                this.setState({ endDate: startDate }, () => {
+                    this.onDateFilterClick();
+                });
+            } else {
+                this.onDateFilterClick();
+            }
+        });
+    };
+
+    onClearDateRange = () => {
+        const { dateNow } = this.state;
+        const { setDateRange } = this.props;
+        setDateRange({ startDate: null, endDate: null });
+        this.setState({
+            startDate: dateNow,
+            endDate: dateNow
+        });
     };
 
     render() {
         const { dateNow, startDate, endDate } = this.state;
-        // console.log('searchKey:', this.props.appState.searchKey);
+        const { appState } = this.props;
+        const { dateRange } = appState;
+
         return (
             <DateSelectorWrapper className="date-selector">
                 <div className="date-area">
@@ -105,10 +110,11 @@ class DateSelectorBase extends React.Component<DateSelectorProps, any> {
                         <DatePicker
                             selected={startDate}
                             onChange={(date: Date) => this.setDate(date, 'startDate')}
-                            minDate={dateNow}
+                            // minDate={dateNow}
                             customInput={<DatePickerInput />}
                             placeholderText='Select your start date'
                             popperPlacement="bottom"
+                            todayButton="Today"
                         />
                     </div>
                     <div className="icon-range">
@@ -123,10 +129,14 @@ class DateSelectorBase extends React.Component<DateSelectorProps, any> {
                             customInput={<DatePickerInput />}
                             placeholderText='Select your end date'
                             popperPlacement="bottom"
+                            todayButton="Today"
                         />
                     </div>
                 </div>
-                <button onClick={this.onDateFilterClick}><FontAwesomeIcon icon={faCalendarCheck} /></button>
+                { !!dateRange.startDate || !!dateRange.endDate
+                    ? <button onClick={this.onClearDateRange}><FontAwesomeIcon icon={faTimes} /></button>
+                    : <button onClick={this.onDateFilterClick}><FontAwesomeIcon icon={faCalendarCheck} /></button>
+                }
             </DateSelectorWrapper>
         );
     }
@@ -137,7 +147,7 @@ const mapStateToProps = (state: ReducerStateData) => {
 };
 
 const mapDispatchToProps = (dispatch: any) => ({
-    setSearchKey: (data: string) => dispatch(setSearchKey(data)),
+    setDateRange: (data: DateRangeData) => dispatch(setDateRange(data)),
     setSnackBarDisplay: (data: SnackBarData) => dispatch(setSnackBarDisplay(data)),
 });
 

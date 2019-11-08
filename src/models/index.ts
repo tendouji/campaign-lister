@@ -11,6 +11,11 @@ export type SnackBarData = {
     message?: string;
 }
 
+export type DateRangeData = {
+    startDate: Date | null;
+    endDate: Date | null;
+}
+
 export type AppStateData = {
     [key: string]: any
 };

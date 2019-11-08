@@ -1,5 +1,7 @@
 export const config = {
     minSearchLength: 3,
+    recordPerPage: 5,
+
     snackBarLifeSpan: 5000,
     snackBarTransition: 300,
 

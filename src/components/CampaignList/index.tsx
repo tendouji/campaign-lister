@@ -1,10 +1,7 @@
 /*
 * Todo:
-* - sorting
 * - increment id if existed
 * - perhaps delete record
-* - pagination
-* - total view per page?
 * - HOC perhaps?
 * - hide module function if possible
 * - minify public JS
@@ -13,13 +10,30 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import styled from "styled-components";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faDotCircle} from "@fortawesome/free-solid-svg-icons/faDotCircle";
-import {colors, layout, styles} from '../../constants/ui';
-import {setSearchKey, setSnackBarDisplay} from "../../actions";
-import {CampaignData, CampaignStatus, ReducerStateData, SnackBarData} from '../../models';
-import {config} from "../../constants/config";
-import {compareObject, convertToCurrency} from "../../helpers";
+import ReactPaginate from 'react-paginate';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDotCircle } from "@fortawesome/free-solid-svg-icons/faDotCircle";
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons/faChevronLeft";
+import { faChevronRight } from "@fortawesome/free-solid-svg-icons/faChevronRight";
+import {
+    colors,
+    layout,
+    styles
+} from '../../constants/ui';
+import {
+    setDateRange,
+    setSearchKey,
+    setSnackBarDisplay
+} from "../../actions";
+import {
+    CampaignData,
+    CampaignStatus,
+    DateRangeData,
+    ReducerStateData,
+    SnackBarData
+} from '../../models';
+import { config } from "../../constants/config";
+import { beautifyDate, compareObject, convertToCurrency } from "../../helpers";
 
 
 interface StatusDotProps {
@@ -51,98 +65,219 @@ type CampaignListProps = {
 }
 
 type CampaignListState = {
-    campaigns: CampaignData[],
     curDate: Date,
+    filteredCampaigns: CampaignData[],
+    pageCount: number,
+    curPage: number,
+    curPageCampaigns: CampaignData[],
 }
 
 class CampaignListBase extends React.Component<CampaignListProps, CampaignListState> {
-    // private searchKeyRef: React.RefObject<HTMLInputElement>;
-
     constructor(props: CampaignListProps) {
         super(props);
 
         this.state = {
-            campaigns: [],
+            filteredCampaigns: [],
             curDate: new Date(),
+            pageCount: 0,
+            curPage: 0,
+            curPageCampaigns: [],
         };
-
-        const x = {a: 1, b: 2};
-        const y = {b: 2, a: 1};
-        compareObject(x, y);
-
-        // this.searchKeyRef = React.createRef();
     }
 
     componentDidUpdate(prevProps: any) {
         const { appState, campaigns } = this.props;
+        const { dateRange } = appState;
+
+        // NOTE: for adding campaigns
         if(prevProps.campaigns !== campaigns) {
             if(campaigns.length > 0) {
-                this.setState({ campaigns });
+                this.setState({
+                    filteredCampaigns: campaigns
+                }, () => this.getPageCount());
+            }
+            return;
+            // NOTE: if updates are due to campaign list change, no need to further continue
+        }
+
+        // NOTE: for searchKey results
+        if(prevProps.appState.searchKey !== appState.searchKey) {
+            if( appState.searchKey !== '') {
+                const filtered = this.filterCampaignsBySearchKey(appState.searchKey);
+                this.setState({
+                    filteredCampaigns: filtered
+                }, () => this.getPageCount());
+            } else {
+                // NOTE: searchKey is cleared
+                if(!!dateRange.startDate && !!dateRange.endDate) {
+                    const dateRangeFiltered = this.filterCampaignsByDateRange(dateRange.startDate, dateRange.endDate);
+                    this.setState({
+                        filteredCampaigns: dateRangeFiltered
+                    }, () => this.getPageCount());
+                } else {
+                    this.setState({
+                        filteredCampaigns: campaigns.length > 0 ? campaigns : []
+                    }, () => this.getPageCount());
+                }
             }
         }
 
-        if(prevProps.appState.searchKey !== appState.searchKey) {
-            if( appState.searchKey !== '') {
-                const filtered = this.filterCampaigns(appState.searchKey);
-                this.setState({ campaigns: filtered });
-            } else {
+        // NOTE: for dateRange results
+        if( (prevProps.appState.dateRange.startDate !== dateRange.startDate) ||
+            (prevProps.appState.dateRange.endDate !== dateRange.endDate)
+        ) {
+            // NOTE: either of the dates not equal, then should update result
+            if(!!dateRange.startDate && !!dateRange.endDate) {
+                const filtered = this.filterCampaignsByDateRange(dateRange.startDate, dateRange.endDate);
                 this.setState({
-                    campaigns: campaigns.length > 0 ? campaigns : []
-                });
+                    filteredCampaigns: filtered
+                }, () => this.getPageCount());
+            } else {
+                // NOTE: dateRange is cleared
+                if(appState.searchKey !== '') {
+                    const searchKeyFiltered = this.filterCampaignsBySearchKey(appState.searchKey);
+                    this.setState({
+                        filteredCampaigns: searchKeyFiltered
+                    }, () => this.getPageCount());
+                } else {
+                    this.setState({
+                        filteredCampaigns: campaigns.length > 0 ? campaigns : []
+                    }, () => this.getPageCount());
+                }
             }
         }
     }
 
-    filterCampaigns = (searchKey: string) => {
-        const { campaigns } = this.state;
+    filterCampaignsBySearchKey = (searchKey: string) => {
+        const { filteredCampaigns } = this.state;
+        const { appState, campaigns } = this.props;
+        let _campaigns: CampaignData[] = [];
 
-        if(campaigns.length === 0) {
-            const { setSnackBarDisplay, setSearchKey } = this.props;
-            setSnackBarDisplay({
-                show: true,
-                message: 'No records to search. Add some campaigns to begin!'
-            });
-            setSearchKey('');
-            return [];
+        if(!!appState.dateRange.startDate || !!appState.dateRange.endDate) {
+            // NOTE: search will filter based on dateRange results
+            _campaigns = filteredCampaigns;
+        } else {
+            _campaigns = campaigns;
         }
 
-        return campaigns.filter((item, key) => {
+        if(_campaigns.length === 0) {
+            return this.noCampaign('searchKey');
+        }
+
+        return _campaigns.filter((item: CampaignData) => {
             const _name = item.name.toLowerCase();
             const _searchKey = searchKey.toLowerCase();
             return _name.includes(_searchKey);
         });
     };
 
-    /*
-    onSearchClick = (e: React.MouseEvent) => {
-        const searchKeyElm = this.searchKeyRef.current;
-        if(!!searchKeyElm) {
-            const searchVal = searchKeyElm.value;
+    filterCampaignsByDateRange = (startDate: Date, endDate: Date) => {
+        const { filteredCampaigns } = this.state;
+        const { appState, campaigns } = this.props;
+        let _campaigns: CampaignData[] = [];
 
-            if(searchVal.length < config.minSearchLength) {
-                const { setSnackBarDisplay } = this.props;
-                setSnackBarDisplay({
-                    show: true,
-                    message: 'Search length is too short.'
-                });
-                return;
-            }
-
-            const { setSearchKey } = this.props;
-            setSearchKey(searchVal);
+        if(appState.searchKey !== '') {
+            // NOTE: search will filter based on searchKey results
+            _campaigns = filteredCampaigns;
+        } else {
+            _campaigns = campaigns;
         }
+
+        if(_campaigns.length === 0) {
+            return this.noCampaign('rateRange');
+        }
+
+        return _campaigns.filter((item: CampaignData) => {
+            const _startDate = new Date(item.startDate);
+            const _endDate = new Date(item.endDate);
+
+            if(_endDate < startDate) { // NOTE: campaign already ended
+                return false;
+            } else {
+                if(_startDate > endDate) { // NOTE: campaign haven't started
+                    return false;
+                }
+            }
+            return true;
+        });
     };
-    */
+
+    noCampaign = (type: string): [] => {
+        const { setSearchKey, setDateRange } = this.props;
+        if(type === 'searchKey') setSearchKey('');
+        if(type === 'dateRange') setDateRange({ startDate: null, endDate: null });
+        return [];
+    };
+
+    onNameClick = (nameStr: string) => {
+        const { setSearchKey } = this.props;
+        setSearchKey(nameStr.toLowerCase());
+    };
+
+    hasSearchKey = () => this.props.appState.searchKey !== '';
+
+    hasDateRange = () => !!this.props.appState.dateRange.startDate;
+    // NOTE: as long has startDate, the code will store endDate
+
+    checkIsSearchResult = () => (this.hasSearchKey() || this.hasDateRange());
+
+    generateHeaderDescription = () => {
+        const { filteredCampaigns } = this.state;
+        const { appState } = this.props;
+        const { searchKey, dateRange } = appState;
+
+        return 'Results for' + (
+            this.checkIsSearchResult() ? [
+                ` campaign's`,
+                (this.hasSearchKey() ? ` name with "<span>${searchKey}</span>"` : ''),
+                (this.hasSearchKey() && this.hasDateRange() ? ' and ' : ''),
+                (this.hasDateRange()
+                    ? ` period between <span>${beautifyDate(dateRange.startDate)} - ${beautifyDate(dateRange.endDate)}</span>`
+                    : '')
+            ].join('') : ' <span>all</span> campaigns') +
+            ` (${filteredCampaigns.length} entr${filteredCampaigns.length > 1 ? 'ies' : 'y'})`;
+    };
+
+    getPageCount = () => {
+        const { filteredCampaigns } = this.state;
+        this.setState({
+            pageCount: Math.ceil(filteredCampaigns.length / config.recordPerPage)
+        }, () => this.getRecordByPage());
+    };
+
+    onPaginationClick = (data: any) => {
+        this.setState({
+            curPage: data.selected
+        }, () => { this.getRecordByPage() });
+    };
+
+    getRecordByPage = () => {
+        const { filteredCampaigns, curPage } = this.state;
+
+        const startIndex = curPage * config.recordPerPage;
+        let endIndex = ((curPage + 1) * config.recordPerPage);
+        if(endIndex > filteredCampaigns.length) {
+            endIndex = filteredCampaigns.length;
+        }
+
+        const curPageCampaigns = filteredCampaigns.slice(startIndex, endIndex);
+
+        this.setState({ curPageCampaigns });
+    };
 
     render() {
         const { appState } = this.props;
-        const { campaigns, curDate } = this.state;
+        const { curDate, curPageCampaigns } = this.state;
         const dataLabels: { [key:string]: string } = config.campaignDataLabels;
 
         return (
             <>
                 <CampaignHeaderWrapper className="campaign-header">
-                    <h2 className="title">All Campaigns</h2>
+                    <div className="title">
+                        <h2>Campaign list</h2>
+                        <div className="description"
+                            dangerouslySetInnerHTML={{__html: this.generateHeaderDescription()}} />
+                    </div>
                     <div className="legend">
                         <div className="legend-title">Status Type</div>
                         <div className="legend-row">
@@ -169,8 +304,8 @@ class CampaignListBase extends React.Component<CampaignListProps, CampaignListSt
                             </tr>
                         </thead>
                         <tbody>
-                            { !!campaigns && campaigns.length > 0 ? (<>
-                                { campaigns.map((item, index) => {
+                            { !!curPageCampaigns && curPageCampaigns.length > 0 ? (<>
+                                { curPageCampaigns.map((item, index) => {
                                     const _item: any = item;
                                     const campaignStartDateRaw = new Date(_item.startDate);
                                     const campaignEndDateRaw = new Date(_item.endDate);
@@ -184,31 +319,36 @@ class CampaignListBase extends React.Component<CampaignListProps, CampaignListSt
                                     return (
                                         <tr key={index}>
                                             { Object.keys(dataLabels).map((key: string) => {
-                                                if(key === 'status') {
-                                                    return <td key={key}>
-                                                        <StatusDot status={status} />
-                                                    </td>
+                                                switch(key) {
+                                                    case 'status':
+                                                        return <td key={key}><StatusDot status={status} /></td>;
+                                                    case 'name':
+                                                        return <td key={key}>
+                                                            <a title="Click to search for campaign with same name"
+                                                                onClick={() => this.onNameClick(_item[key])}
+                                                            >{_item[key]}</a>
+                                                        </td>;
+                                                    case 'startDate':
+                                                    case 'endDate':
+                                                        return <td key={key}>{beautifyDate(new Date(_item[key]))}</td>;
+                                                    case 'budget':
+                                                        return <td key={key}>{convertToCurrency(+_item[key])}</td>;
+                                                    default:
+                                                        return <td key={key}>{_item[key]}</td>;
                                                 }
-                                                if(key === 'name') {
-                                                    return <td key={key}>
-                                                        <a href="#">{_item[key]}</a>
-                                                    </td>
-                                                }
-                                                if(key === 'budget' ) {
-                                                    return <td key={key}>
-                                                        <a href="#">{convertToCurrency(+_item[key])}</a>
-                                                    </td>
-                                                }
-
-                                                return <td key={key}>{_item[key]}</td>
                                             }) }
                                         </tr>
                                     )
                                 })}</>
                             ) : (
-                                <tr>
+                                <tr className="no-result">
                                     <td colSpan={Object.keys(dataLabels).length}>
-                                        { !!appState && appState.searchKey !== '' ? (<>
+                                        { ( !!appState && (
+                                            appState.searchKey !== '' || (
+                                                !!appState.dateRange.startDate ||
+                                                !!appState.dateRange.endDate
+                                            )
+                                        )) ? (<>
                                             <div className="highlight">No campaigns found!</div>
                                             Please try again.</>
                                         ) : (<>
@@ -221,6 +361,23 @@ class CampaignListBase extends React.Component<CampaignListProps, CampaignListSt
                         </tbody>
                     </table>
                 </CampaignTableWrapper>
+
+                { curPageCampaigns.length > 0 && (
+                    <CampaignPaginationWrapper className="campaign-pagination">
+                        <ReactPaginate
+                            previousLabel={<FontAwesomeIcon icon={faChevronLeft} />}
+                            nextLabel={<FontAwesomeIcon icon={faChevronRight} />}
+                            breakLabel={'...'}
+                            breakClassName={'break-me'}
+                            pageCount={this.state.pageCount}
+                            marginPagesDisplayed={2}
+                            pageRangeDisplayed={5}
+                            onPageChange={this.onPaginationClick}
+                            containerClassName={'pagination'}
+                            activeClassName={'active'}
+                        />
+                    </CampaignPaginationWrapper>
+                )}
             </>
         )
     }
@@ -234,6 +391,7 @@ const mapStateToProps = (state: ReducerStateData) => {
 };
 
 const mapDispatchToProps = (dispatch: any) => ({
+    setDateRange: (data: DateRangeData) => dispatch(setDateRange(data)),
     setSearchKey: (data: string) => dispatch(setSearchKey(data)),
     setSnackBarDisplay: (data: SnackBarData) => dispatch(setSnackBarDisplay(data)),
 });
@@ -255,7 +413,17 @@ const CampaignHeaderWrapper = styled.div`
     
     & .title {
         width: calc(100% - ${indicatorPanelWidth});
-        margin: 0;
+        
+        & > h2 {
+            margin: 0 0 ${layout.smallGap};
+        }
+        
+        & .description {
+            & > span {
+                font-weight: 700;
+                color: ${colors.primary};
+            }
+        }
     }
     
     & .legend {
@@ -313,19 +481,80 @@ const CampaignTableWrapper = styled.div`
             }
         }
         
-        
         & > tbody {
             & tr {
                 &:nth-child(odd) {
                     background-color: ${colors.lightGray};
                 }
+                
+                &:not(.no-result):hover {
+                    background-color: ${colors.lightGray2};
+                }
             }
+        }
+        
+        & a {
+            text-decoration: underline;
+            cursor: pointer;
         }
         
         & .highlight {
             margin-bottom: ${layout.smallGap};
             color: ${colors.red};
             font-weight: 700;
+        }
+    }
+`;
+
+const CampaignPaginationWrapper = styled.div`
+    width: 100%;
+    padding: 0 ${layout.standardGap} ${layout.standardGap};
+    box-sizing: border-box;
+    
+    & > ul {
+        display: flex;
+        padding: 0;
+        margin: 0;
+        border-top: ${styles.lineStyle};
+        border-bottom: ${styles.lineStyle};
+        list-style: none;
+        justify-content: center;
+        
+        & > li {
+            width: 3rem;
+            padding: ${layout.standardGap} 0;
+            text-align: center;
+            cursor: pointer;
+            
+            &:hover {
+                background-color: ${colors.lightGray2};
+            }
+                
+            & > a {
+                color: ${colors.primary};
+                outline: 0;
+            }
+                        
+            &.active {
+                background-color: ${colors.primary};
+                
+                & > a {
+                    color: ${colors.white};
+                }
+            }
+            
+            &.disabled {
+                cursor: auto;
+                
+                &:hover {
+                    background-color: transparent;
+                }
+                
+                & > a {
+                
+                    color: ${colors.lightGray2};
+                }
+            }
         }
     }
 `;
