@@ -1,6 +1,5 @@
 /*
 * Todo:
-* - disable input if no records
 * - add help
 * */
 

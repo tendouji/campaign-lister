@@ -6,7 +6,11 @@ import DateSelector from "../DateSelector";
 import { config } from "../../constants/config";
 
 
-export const FilterBar = (): JSX.Element => (
+type FilterBarProps = {
+    disabled: boolean,
+}
+
+export const FilterBar = ({ disabled }: FilterBarProps = { disabled: true }): JSX.Element => (
     <FilterBarWrapper className="app-filter">
         <div className="column search-panel">
             <SearchInput />
@@ -14,17 +18,28 @@ export const FilterBar = (): JSX.Element => (
         <div className="column date-panel">
             <DateSelector />
         </div>
+        { !!disabled && <div className="overlay" /> }
     </FilterBarWrapper>
 );
 
 const datePanelWidth: string = '23em';
 
 const FilterBarWrapper = styled.div`
+    position: relative;
     display: flex;
     height: ${layout.filterBarHeight};
     border-bottom: ${styles.lineStyle};
     justify-content: space-between;
     align-items: center;
+    
+    & .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.7);
+    }
     
     & .column {
         box-sizing: border-box;

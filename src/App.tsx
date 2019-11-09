@@ -59,13 +59,13 @@ export class App extends React.Component<any, any> {
     };
 
     render() {
-        const { appState } = this.props;
+        const { appState, campaigns } = this.props;
         const { snackBarDisplay } = appState;
 
         return (
             <>
                 <Header title={'CR8 Campaign'} />
-                <FilterBar />
+                <FilterBar disabled={campaigns.length === 0} />
                 <CampaignList />
                 <Footer />
 
@@ -81,7 +81,10 @@ export class App extends React.Component<any, any> {
 
 
 const mapStateToProps = (state: ReducerStateData) => {
-    return ({ appState: state.appState })
+    return ({
+        appState: state.appState,
+        campaigns: state.campaigns
+    })
 };
 
 const mapDispatchToProps = (dispatch: any) => ({
