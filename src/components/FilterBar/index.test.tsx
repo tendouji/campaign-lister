@@ -3,7 +3,7 @@ import toJson from "enzyme-to-json";
 import { shallow } from "enzyme";
 import { FilterBar } from './';
 import SearchInput from "../SearchInput";
-import DatePicker from "../DatePicker";
+import DateSelector from "../DateSelector";
 
 
 describe('<FilterBar />', () => {
@@ -15,6 +15,6 @@ describe('<FilterBar />', () => {
 
     it('renders the correct child components', () => {
         expect(wrapper.find(SearchInput)).toHaveLength(1);
-        expect(wrapper.find(DatePicker)).toHaveLength(1);
+        expect(wrapper.find(DateSelector)).toHaveLength(1);
     });
 });

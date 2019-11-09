@@ -13,38 +13,17 @@ import { DateRangeData, ReducerStateData, SnackBarData } from '../../models';
 import "react-datepicker/dist/react-datepicker.css";
 
 
-type DatePickerInputData = {
-    [key:string]: any
-}
-
-class DatePickerInput extends React.PureComponent<DatePickerInputData> {
-    render() {
-        const { value, onClick } = this.props;
-        return (
-            <DatePickerInputWrapper className="date-input" onClick={onClick}>
-                {value}
-            </DatePickerInputWrapper>
-        )
-    }
-}
-
-const DatePickerInputWrapper = styled.button`
-    width: 6rem;
-    padding: ${layout.xSmallGap} ${layout.smallGap};
-    border: ${styles.lineStyle};
-    font-size: ${layout.fontSizeStandard};
-    background-color: ${colors.lightGray};
-    box-sizing: border-box;
-`;
-
-
 type DateSelectorProps = {
     [key:string]: any
 }
 
-class DateSelectorBase extends React.Component<DateSelectorProps, any> {
+export class DateSelector extends React.Component<DateSelectorProps, any> {
     constructor(props: DateSelectorProps) {
         super(props);
+
+        this.setDate = this.setDate.bind(this);
+        this.onClearDateRange = this.onClearDateRange.bind(this);
+        this.onDateFilterClick = this.onDateFilterClick.bind(this);
 
         const dateNow: Date = new Date();
 
@@ -67,7 +46,7 @@ class DateSelectorBase extends React.Component<DateSelectorProps, any> {
         }
     }
 
-    onDateFilterClick = (e?: React.MouseEvent | undefined) => {
+    onDateFilterClick(e?: React.MouseEvent | undefined) {
         const { startDate, endDate } = this.state;
 
         if(startDate > endDate) {
@@ -86,7 +65,7 @@ class DateSelectorBase extends React.Component<DateSelectorProps, any> {
         });
     };
 
-    setDate = (dateVal: Date, type: string) => {
+    setDate(dateVal: Date, type: string) {
         this.setState({ [type]: dateVal }, () => {
             const { startDate, endDate } = this.state;
             if(startDate > endDate) {
@@ -99,7 +78,7 @@ class DateSelectorBase extends React.Component<DateSelectorProps, any> {
         });
     };
 
-    onClearDateRange = () => {
+    onClearDateRange() {
         const { dateNow } = this.state;
         const { setDateRange } = this.props;
         setDateRange({ startDate: null, endDate: null });
@@ -120,13 +99,13 @@ class DateSelectorBase extends React.Component<DateSelectorProps, any> {
                     <div className="date-col start-date">
                         <div className="label">Start Date</div>
                         <DatePicker
+                            id="startDatePicker"
                             selected={startDate}
                             onChange={(date: Date) => this.setDate(date, 'startDate')}
-                            // minDate={dateNow}
-                            customInput={<DatePickerInput />}
                             placeholderText='Select your start date'
                             popperPlacement="bottom"
                             todayButton="Today"
+                            className="datepicker-input"
                         />
                     </div>
                     <div className="icon-range">
@@ -135,19 +114,20 @@ class DateSelectorBase extends React.Component<DateSelectorProps, any> {
                     <div className="date-col end-date">
                         <div className="label">End Date</div>
                         <DatePicker
+                            id="endDatePicker"
                             selected={endDate < startDate ? startDate : endDate}
                             onChange={(date: Date) => this.setDate(date, 'endDate')}
                             minDate={startDate}
-                            customInput={<DatePickerInput />}
                             placeholderText='Select your end date'
                             popperPlacement="bottom"
                             todayButton="Today"
+                            className="datepicker-input"
                         />
                     </div>
                 </div>
                 { !!dateRange.startDate || !!dateRange.endDate
-                    ? <button onClick={this.onClearDateRange}><FontAwesomeIcon icon={faTimes} /></button>
-                    : <button onClick={this.onDateFilterClick}><FontAwesomeIcon icon={faCalendarCheck} /></button>
+                    ? <button id="clearDateRange" onClick={this.onClearDateRange}><FontAwesomeIcon icon={faTimes} /></button>
+                    : <button id="goFilter" onClick={this.onDateFilterClick}><FontAwesomeIcon icon={faCalendarCheck} /></button>
                 }
             </DateSelectorWrapper>
         );
@@ -163,9 +143,8 @@ const mapDispatchToProps = (dispatch: any) => ({
     setSnackBarDisplay: (data: SnackBarData) => dispatch(setSnackBarDisplay(data)),
 });
 
-const DateSelector = connect(mapStateToProps, mapDispatchToProps)(DateSelectorBase);
+export default connect(mapStateToProps, mapDispatchToProps)(DateSelector);
 
-export default DateSelector;
 
 
 const DateSelectorWrapper = styled.div`
@@ -203,5 +182,21 @@ const DateSelectorWrapper = styled.div`
     
     & .react-datepicker__triangle {
         left: 50%;
+    }
+    
+    & .react-datepicker__input-container {
+        & > input[type="text"] {
+            width: 6rem;
+            padding: ${layout.xSmallGap} ${layout.smallGap};
+            border: ${styles.lineStyle};
+            font-size: ${layout.fontSizeStandard};
+            text-align: center;
+            background-color: ${colors.lightGray};
+            box-sizing: border-box;
+            
+            &:focus {
+                outline: none;
+            }
+        }
     }
 `;

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { layout, styles } from "../../constants/ui";
 import SearchInput from "../SearchInput";
-import DatePicker from "../DatePicker";
+import DateSelector from "../DateSelector";
 import { config } from "../../constants/config";
 
 
@@ -12,7 +12,7 @@ export const FilterBar = (): JSX.Element => (
             <SearchInput />
         </div>
         <div className="column date-panel">
-            <DatePicker />
+            <DateSelector />
         </div>
     </FilterBarWrapper>
 );

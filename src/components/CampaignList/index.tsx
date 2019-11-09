@@ -1,10 +1,7 @@
 /*
 * Todo:
-* - increment id if existed
-* - perhaps delete record
-* - HOC perhaps?
-* - hide module function if possible
-* - minify public JS
+* - disable input if no records
+* - add help
 * */
 
 import React from 'react';
@@ -85,7 +82,7 @@ type CampaignListState = {
     curPageCampaigns: CampaignData[],
 }
 
-class CampaignListBase extends React.Component<CampaignListProps, CampaignListState> {
+export class CampaignList extends React.Component<CampaignListProps, CampaignListState> {
     constructor(props: CampaignListProps) {
         super(props);
 
@@ -412,9 +409,8 @@ const mapDispatchToProps = (dispatch: any) => ({
     setSnackBarDisplay: (data: SnackBarData) => dispatch(setSnackBarDisplay(data)),
 });
 
-const CampaignList = connect(mapStateToProps, mapDispatchToProps)(CampaignListBase);
+export default connect(mapStateToProps, mapDispatchToProps)(CampaignList);
 
-export default CampaignList;
 
 
 

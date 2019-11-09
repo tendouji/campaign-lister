@@ -4,12 +4,12 @@ import toJson from "enzyme-to-json";
 import { Header } from './';
 
 
-const props = {
-    title: 'Test Title',
-};
-
 describe('<Header />', () => {
     it('renders without crashing with props', () => {
+        const props = {
+            title: 'Test Title',
+        };
+
         const wrapper = shallow(<Header {...props} />);
         expect(toJson(wrapper)).toMatchSnapshot()
     });

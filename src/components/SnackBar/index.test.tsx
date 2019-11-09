@@ -4,12 +4,12 @@ import toJson from "enzyme-to-json";
 import SnackBar from './';
 
 
-const props = {
-    show: true,
-    message: 'Test Message',
-};
-
 describe('<SnackBar />', () => {
+    const props = {
+        show: true,
+        message: 'Test Message',
+    };
+
     it('renders without crashing with props', () => {
         const wrapper = shallow(<SnackBar {...props} />);
         expect(wrapper.hasClass('show')).toEqual(true);

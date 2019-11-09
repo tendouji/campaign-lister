@@ -1,0 +1,499 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DateSelector /> renders without crashing based on mock date redux 1`] = `
+<DateSelector
+  appState={
+    Object {
+      "dateRange": Object {
+        "endDate": 2019-11-09T00:00:00.000Z,
+        "startDate": 2019-11-09T00:00:00.000Z,
+      },
+    }
+  }
+  setDateRange={[Function]}
+  store={
+    Object {
+      "dispatch": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+      Symbol(observable): [Function],
+    }
+  }
+>
+  <styled.div
+    className="date-selector"
+  >
+    <StyledComponent
+      className="date-selector"
+      forwardedComponent={
+        Object {
+          "$$typeof": Symbol(react.forward_ref),
+          "attrs": Array [],
+          "componentStyle": ComponentStyle {
+            "componentId": "sc-bdVaJa",
+            "isStatic": false,
+            "lastClassName": "hOtDNm",
+            "rules": Array [
+              "
+    display: flex;
+    width: 100%;
+    align-items: center;
+    
+    & .date-area {
+        display: flex;
+        width: calc(100% - ",
+              "4.5rem",
+              ");
+        padding: 0 ",
+              "1.25rem",
+              ";
+        box-sizing: border-box;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    & .date-col {
+        box-sizing: border-box;
+        font-size: ",
+              "0.875rem",
+              ";
+        
+        & > .label {
+            margin-bottom: ",
+              "0.3125rem",
+              ";
+            font-size: ",
+              "0.75rem",
+              ";
+            font-weight: 500;
+        }
+    }
+    
+    & .icon-range {
+        padding: 1.4rem 3px 0;
+    }
+    
+    & > button {
+        ",
+              "
+        width: 4.5rem;
+        height: 4.5rem;
+        padding: 0;
+        border: 0;
+        font-size: 1.5rem;
+        cursor: pointer;
+        
+        &:hover {
+            background-color: #f6f6f6;
+        }
+        
+        &:focus {
+            outline: none;
+        }
+    ",
+              ";
+    }
+    
+    & .react-datepicker__triangle {
+        left: 50%;
+    }
+    
+    & .react-datepicker__input-container {
+        & > input[type=\\"text\\"] {
+            width: 6rem;
+            padding: ",
+              "0.3125rem",
+              " ",
+              "0.625rem",
+              ";
+            border: ",
+              "1px solid #ddd",
+              ";
+            font-size: ",
+              "0.875rem",
+              ";
+            text-align: center;
+            background-color: ",
+              "#f6f6f6",
+              ";
+            box-sizing: border-box;
+            
+            &:focus {
+                outline: none;
+            }
+        }
+    }
+",
+            ],
+          },
+          "displayName": "styled.div",
+          "foldedComponentIds": Array [],
+          "render": [Function],
+          "styledComponentId": "sc-bdVaJa",
+          "target": "div",
+          "toString": [Function],
+          "warnTooManyClasses": [Function],
+          "withComponent": [Function],
+        }
+      }
+      forwardedRef={null}
+    >
+      <div
+        className="sc-bdVaJa hOtDNm date-selector"
+      >
+        <div
+          className="date-area"
+        >
+          <div
+            className="date-col start-date"
+          >
+            <div
+              className="label"
+            >
+              Start Date
+            </div>
+            <t
+              allowSameDay={false}
+              className="datepicker-input"
+              dateFormat="MM/dd/yyyy"
+              dateFormatCalendar="LLLL yyyy"
+              disabled={false}
+              disabledKeyboardNavigation={false}
+              dropdownMode="scroll"
+              id="startDatePicker"
+              inlineFocusSelectedMonth={false}
+              monthsShown={1}
+              nextMonthButtonLabel="Next Month"
+              nextYearButtonLabel="Next Year"
+              onBlur={[Function]}
+              onChange={[Function]}
+              onClickOutside={[Function]}
+              onFocus={[Function]}
+              onInputClick={[Function]}
+              onInputError={[Function]}
+              onKeyDown={[Function]}
+              onMonthChange={[Function]}
+              onSelect={[Function]}
+              onYearChange={[Function]}
+              placeholderText="Select your start date"
+              popperPlacement="bottom"
+              preventOpenOnFocus={false}
+              previousMonthButtonLabel="Previous Month"
+              previousYearButtonLabel="Previous Year"
+              readOnly={false}
+              renderDayContents={[Function]}
+              selected={2019-11-09T00:00:00.000Z}
+              shouldCloseOnSelect={true}
+              showMonthYearPicker={false}
+              showQuarterYearPicker={false}
+              showTimeInput={false}
+              showTimeSelect={false}
+              strictParsing={false}
+              timeCaption="Time"
+              timeInputLabel="Time"
+              timeIntervals={30}
+              todayButton="Today"
+              withPortal={false}
+            >
+              <t
+                hidePopper={true}
+                popperComponent={null}
+                popperModifiers={
+                  Object {
+                    "preventOverflow": Object {
+                      "boundariesElement": "viewport",
+                      "enabled": true,
+                      "escapeWithReference": true,
+                    },
+                  }
+                }
+                popperPlacement="bottom"
+                popperProps={Object {}}
+                targetComponent={
+                  <div
+                    className="react-datepicker__input-container"
+                  >
+                    <input
+                      className="datepicker-input"
+                      disabled={false}
+                      id="startDatePicker"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      onFocus={[Function]}
+                      onKeyDown={[Function]}
+                      placeholder="Select your start date"
+                      readOnly={false}
+                      type="text"
+                      value="11/09/2019"
+                    />
+                  </div>
+                }
+              >
+                <Manager>
+                  <Reference>
+                    <InnerReference
+                      setReferenceNode={[Function]}
+                    >
+                      <div
+                        className="react-datepicker-wrapper"
+                      >
+                        <div
+                          className="react-datepicker__input-container"
+                        >
+                          <input
+                            className="datepicker-input"
+                            disabled={false}
+                            id="startDatePicker"
+                            onBlur={[Function]}
+                            onChange={[Function]}
+                            onClick={[Function]}
+                            onFocus={[Function]}
+                            onKeyDown={[Function]}
+                            placeholder="Select your start date"
+                            readOnly={false}
+                            type="text"
+                            value="11/09/2019"
+                          />
+                        </div>
+                      </div>
+                    </InnerReference>
+                  </Reference>
+                </Manager>
+              </t>
+            </t>
+          </div>
+          <div
+            className="icon-range"
+          >
+            <FontAwesomeIcon
+              border={false}
+              className=""
+              fixedWidth={false}
+              flip={null}
+              icon={
+                Object {
+                  "icon": Array [
+                    512,
+                    512,
+                    Array [],
+                    "f337",
+                    "M377.941 169.941V216H134.059v-46.059c0-21.382-25.851-32.09-40.971-16.971L7.029 239.029c-9.373 9.373-9.373 24.568 0 33.941l86.059 86.059c15.119 15.119 40.971 4.411 40.971-16.971V296h243.882v46.059c0 21.382 25.851 32.09 40.971 16.971l86.059-86.059c9.373-9.373 9.373-24.568 0-33.941l-86.059-86.059c-15.119-15.12-40.971-4.412-40.971 16.97z",
+                  ],
+                  "iconName": "arrows-alt-h",
+                  "prefix": "fas",
+                }
+              }
+              inverse={false}
+              listItem={false}
+              mask={null}
+              pull={null}
+              pulse={false}
+              rotation={null}
+              size={null}
+              spin={false}
+              swapOpacity={false}
+              symbol={false}
+              title=""
+              transform={null}
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-arrows-alt-h fa-w-16 "
+                data-icon="arrows-alt-h"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={Object {}}
+                viewBox="0 0 512 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M377.941 169.941V216H134.059v-46.059c0-21.382-25.851-32.09-40.971-16.971L7.029 239.029c-9.373 9.373-9.373 24.568 0 33.941l86.059 86.059c15.119 15.119 40.971 4.411 40.971-16.971V296h243.882v46.059c0 21.382 25.851 32.09 40.971 16.971l86.059-86.059c9.373-9.373 9.373-24.568 0-33.941l-86.059-86.059c-15.119-15.12-40.971-4.412-40.971 16.97z"
+                  fill="currentColor"
+                  style={Object {}}
+                />
+              </svg>
+            </FontAwesomeIcon>
+          </div>
+          <div
+            className="date-col end-date"
+          >
+            <div
+              className="label"
+            >
+              End Date
+            </div>
+            <t
+              allowSameDay={false}
+              className="datepicker-input"
+              dateFormat="MM/dd/yyyy"
+              dateFormatCalendar="LLLL yyyy"
+              disabled={false}
+              disabledKeyboardNavigation={false}
+              dropdownMode="scroll"
+              id="endDatePicker"
+              inlineFocusSelectedMonth={false}
+              minDate={2019-11-09T00:00:00.000Z}
+              monthsShown={1}
+              nextMonthButtonLabel="Next Month"
+              nextYearButtonLabel="Next Year"
+              onBlur={[Function]}
+              onChange={[Function]}
+              onClickOutside={[Function]}
+              onFocus={[Function]}
+              onInputClick={[Function]}
+              onInputError={[Function]}
+              onKeyDown={[Function]}
+              onMonthChange={[Function]}
+              onSelect={[Function]}
+              onYearChange={[Function]}
+              placeholderText="Select your end date"
+              popperPlacement="bottom"
+              preventOpenOnFocus={false}
+              previousMonthButtonLabel="Previous Month"
+              previousYearButtonLabel="Previous Year"
+              readOnly={false}
+              renderDayContents={[Function]}
+              selected={2019-11-09T00:00:00.000Z}
+              shouldCloseOnSelect={true}
+              showMonthYearPicker={false}
+              showQuarterYearPicker={false}
+              showTimeInput={false}
+              showTimeSelect={false}
+              strictParsing={false}
+              timeCaption="Time"
+              timeInputLabel="Time"
+              timeIntervals={30}
+              todayButton="Today"
+              withPortal={false}
+            >
+              <t
+                hidePopper={true}
+                popperComponent={null}
+                popperModifiers={
+                  Object {
+                    "preventOverflow": Object {
+                      "boundariesElement": "viewport",
+                      "enabled": true,
+                      "escapeWithReference": true,
+                    },
+                  }
+                }
+                popperPlacement="bottom"
+                popperProps={Object {}}
+                targetComponent={
+                  <div
+                    className="react-datepicker__input-container"
+                  >
+                    <input
+                      className="datepicker-input"
+                      disabled={false}
+                      id="endDatePicker"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      onFocus={[Function]}
+                      onKeyDown={[Function]}
+                      placeholder="Select your end date"
+                      readOnly={false}
+                      type="text"
+                      value="11/09/2019"
+                    />
+                  </div>
+                }
+              >
+                <Manager>
+                  <Reference>
+                    <InnerReference
+                      setReferenceNode={[Function]}
+                    >
+                      <div
+                        className="react-datepicker-wrapper"
+                      >
+                        <div
+                          className="react-datepicker__input-container"
+                        >
+                          <input
+                            className="datepicker-input"
+                            disabled={false}
+                            id="endDatePicker"
+                            onBlur={[Function]}
+                            onChange={[Function]}
+                            onClick={[Function]}
+                            onFocus={[Function]}
+                            onKeyDown={[Function]}
+                            placeholder="Select your end date"
+                            readOnly={false}
+                            type="text"
+                            value="11/09/2019"
+                          />
+                        </div>
+                      </div>
+                    </InnerReference>
+                  </Reference>
+                </Manager>
+              </t>
+            </t>
+          </div>
+        </div>
+        <button
+          id="clearDateRange"
+          onClick={[Function]}
+        >
+          <FontAwesomeIcon
+            border={false}
+            className=""
+            fixedWidth={false}
+            flip={null}
+            icon={
+              Object {
+                "icon": Array [
+                  352,
+                  512,
+                  Array [],
+                  "f00d",
+                  "M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z",
+                ],
+                "iconName": "times",
+                "prefix": "fas",
+              }
+            }
+            inverse={false}
+            listItem={false}
+            mask={null}
+            pull={null}
+            pulse={false}
+            rotation={null}
+            size={null}
+            spin={false}
+            swapOpacity={false}
+            symbol={false}
+            title=""
+            transform={null}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-times fa-w-11 "
+              data-icon="times"
+              data-prefix="fas"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 352 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </FontAwesomeIcon>
+        </button>
+      </div>
+    </StyledComponent>
+  </styled.div>
+</DateSelector>
+`;

@@ -12,7 +12,7 @@ exports[`<FilterBar /> renders without crashing 1`] = `
   <div
     className="column date-panel"
   >
-    <Connect(DateSelectorBase) />
+    <Connect(DateSelector) />
   </div>
 </styled.div>
 `;

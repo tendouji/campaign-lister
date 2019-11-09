@@ -26,11 +26,11 @@ declare global {
     }
 }
 
-class AppBase extends React.Component<any, any> {
-    element: string = 'lala';
-
+export class App extends React.Component<any, any> {
     constructor(props: any) {
         super(props);
+
+        this.storeCampaigns = this.storeCampaigns.bind(this);
     }
 
     componentDidMount() {
@@ -39,7 +39,7 @@ class AppBase extends React.Component<any, any> {
         }
     }
 
-    storeCampaigns = (data: CampaignData[]) => {
+    storeCampaigns(data: CampaignData[]) {
         console.log('CR8 Campaign: Store campaigns data into redux');
 
         const {
@@ -91,6 +91,5 @@ const mapDispatchToProps = (dispatch: any) => ({
     setSnackBarDisplay: (data: SnackBarData) => dispatch(setSnackBarDisplay(data)),
 });
 
-const App = connect(mapStateToProps, mapDispatchToProps)(AppBase);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
 
-export default App;
