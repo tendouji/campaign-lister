@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import styled from 'styled-components';
 import { colors, layout } from "../../constants/ui";
-import { logo } from "../../assets";
+import { Logo } from "../../assets";
 
 
 type HeaderProps = {
@@ -25,7 +25,7 @@ const HeaderWrapper = styled.header`
     & .logo {
         width: ${layout.headerBarHeight};
         height: ${layout.headerBarHeight};
-        background: ${colors.black} url(${logo}) center / cover no-repeat;
+        background: ${colors.black} url(${Logo}) center / cover no-repeat;
     }
     
     & > h1 {

@@ -14,7 +14,7 @@ type SearchInputState = {
     searchKeyValue: string
 }
 
-class SearchInputBase extends React.Component<any, SearchInputState> {
+export class SearchInput extends React.Component<any, SearchInputState> {
     private searchKeyRef: React.RefObject<HTMLInputElement>;
     private searchKeyTimer: ReturnType<typeof setTimeout> = 0;
 
@@ -23,6 +23,8 @@ class SearchInputBase extends React.Component<any, SearchInputState> {
 
         this.searchKeyRef = React.createRef();
         this.onSearchKeyChange = this.onSearchKeyChange.bind(this);
+        this.onClearSearchKey = this.onClearSearchKey.bind(this);
+        this.onSearchClick = this.onSearchClick.bind(this);
 
         this.state = {
             searchKeyValue: ''
@@ -39,7 +41,7 @@ class SearchInputBase extends React.Component<any, SearchInputState> {
         }
     }
 
-    onSearchClick = (e?: React.MouseEvent | undefined) => {
+    onSearchClick(e?: React.MouseEvent | undefined) {
         const searchKeyElm = this.searchKeyRef.current;
         if(!!searchKeyElm) {
             const searchVal = searchKeyElm.value;
@@ -61,7 +63,7 @@ class SearchInputBase extends React.Component<any, SearchInputState> {
         }
     };
 
-    onSearchKeyChange = () => {
+    onSearchKeyChange() {
         const searchKeyElm = this.searchKeyRef.current;
         if(!!searchKeyElm) {
             this.setState({searchKeyValue: searchKeyElm.value});
@@ -77,7 +79,7 @@ class SearchInputBase extends React.Component<any, SearchInputState> {
         }, 500)
     };
 
-    onClearSearchKey = () => {
+    onClearSearchKey() {
         const { setSearchKey } = this.props;
         setSearchKey('');
     };
@@ -90,6 +92,7 @@ class SearchInputBase extends React.Component<any, SearchInputState> {
             <SearchWrapper className="search-input">
                 <input type="text"
                     id="searchKey"
+                    name="searchKey"
                     ref={this.searchKeyRef}
                     aria-label="Search Input"
                     autoComplete="off"
@@ -99,8 +102,8 @@ class SearchInputBase extends React.Component<any, SearchInputState> {
                     value={searchKeyValue}
                 />
                 { !!appState && appState.searchKey !== ''
-                    ? <button onClick={this.onClearSearchKey}><FontAwesomeIcon icon={faTimes} /></button>
-                    : <button onClick={this.onSearchClick}><FontAwesomeIcon icon={faSearch} /></button>
+                    ? <button id="clearSearch" onClick={this.onClearSearchKey}><FontAwesomeIcon icon={faTimes} /></button>
+                    : <button id="goSearch" onClick={this.onSearchClick}><FontAwesomeIcon icon={faSearch} /></button>
                 }
             </SearchWrapper>
         )
@@ -116,9 +119,8 @@ const mapDispatchToProps = (dispatch: any) => ({
     setSnackBarDisplay: (data: SnackBarData) => dispatch(setSnackBarDisplay(data)),
 });
 
-const SearchInput = connect(mapStateToProps, mapDispatchToProps)(SearchInputBase);
+export default connect(mapStateToProps, mapDispatchToProps)(SearchInput);
 
-export default SearchInput;
 
 
 const SearchWrapper = styled.div`

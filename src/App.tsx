@@ -27,9 +27,16 @@ declare global {
 }
 
 class AppBase extends React.Component<any, any> {
+    element: string = 'lala';
+
     constructor(props: any) {
         super(props);
-        window.EventQueue.subscribe(window.AddCampaignsEventName, this.storeCampaigns);
+    }
+
+    componentDidMount() {
+        if(!!window && !!window.EventQueue) {
+            window.EventQueue.subscribe(window.AddCampaignsEventName, this.storeCampaigns);
+        }
     }
 
     storeCampaigns = (data: CampaignData[]) => {

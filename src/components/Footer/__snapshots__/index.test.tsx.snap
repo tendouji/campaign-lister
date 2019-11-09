@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Footer /> renders without crashing 1`] = `
+<Fragment>
+  <styled.div />
+  <styled.footer
+    className="footer"
+  >
+    <span>
+      © 2019 Chan Wan / CR8 Campaign
+    </span>
+  </styled.footer>
+</Fragment>
+`;

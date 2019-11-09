@@ -1,11 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`render to match snapshot for Header component 1`] = `
-<header
-  className="sc-bdVaJa czHkpe app-header"
+exports[`<Header /> renders without crashing with props 1`] = `
+<styled.header
+  className="app-header"
 >
+  <div
+    className="logo"
+  />
   <h1>
-    Title
+    Test Title
   </h1>
-</header>
+</styled.header>
 `;

@@ -1,5 +1,5 @@
-import * as logo from './logo.png';
+import Logo from './logo.png';
 
 export {
-    logo,
+    Logo,
 }

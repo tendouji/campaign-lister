@@ -1,14 +1,20 @@
 import React from 'react';
+import toJson from "enzyme-to-json";
+import { shallow } from "enzyme";
 import { FilterBar } from './';
-import { testFunctions, testLabels } from "../../constants/test";
+import SearchInput from "../SearchInput";
+import DatePicker from "../DatePicker";
 
 
-const componentType = 'FilterBar';
+describe('<FilterBar />', () => {
+    const wrapper = shallow(<FilterBar />);
 
-it( testLabels.ComponentMatchSnapshot(componentType),
-    () => testFunctions.ComponentMatchSnapshot(<FilterBar />)
-);
+    it('renders without crashing', () => {
+        expect(toJson(wrapper)).toMatchSnapshot();
+    });
 
-it( testLabels.ComponentRenderWithoutCrash(componentType),
-    () => testFunctions.ComponentRenderWithoutCrash(<FilterBar />)
-);
+    it('renders the correct child components', () => {
+        expect(wrapper.find(SearchInput)).toHaveLength(1);
+        expect(wrapper.find(DatePicker)).toHaveLength(1);
+    });
+});

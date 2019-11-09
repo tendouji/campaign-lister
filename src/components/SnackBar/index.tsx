@@ -7,9 +7,9 @@ import { faTimesCircle } from "@fortawesome/free-solid-svg-icons/faTimesCircle";
 
 
 type SnackBarProps = {
-    show: false,
-    message: '',
-    close: () => void,
+    show: boolean,
+    message: string,
+    close?: () => void
 }
 
 class SnackBar extends Component<SnackBarProps, {}> {
@@ -22,7 +22,7 @@ class SnackBar extends Component<SnackBarProps, {}> {
 
     closeHandler = () => {
         const { close } = this.props;
-        close();
+        if(!!close) close();
     };
 
     componentDidMount() { }

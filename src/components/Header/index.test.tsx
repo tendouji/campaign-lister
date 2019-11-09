@@ -1,22 +1,18 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
+import toJson from "enzyme-to-json";
 import { Header } from './';
-import { testLabels, testFunctions } from '../../constants/test';
 
 
-const sampleText = 'Title';
-const componentType = 'Header';
+const props = {
+    title: 'Test Title',
+};
 
-it( testLabels.ComponentMatchSnapshot(componentType),
-    () => testFunctions.ComponentMatchSnapshot(<Header title={sampleText} />)
-);
-
-it( testLabels.ComponentRenderWithoutCrash(componentType),
-    () => testFunctions.ComponentRenderWithoutCrash(<Header title={sampleText} />)
-);
-
-it('render component correctly with string props', () => {
-    const props = { title: 'Campaign' },
-        HeaderComponent = mount (<Header {...props} />);
-    expect((HeaderComponent).prop('title')).toEqual(props.title);
+describe('<Header />', () => {
+    it('renders without crashing with props', () => {
+        const wrapper = shallow(<Header {...props} />);
+        expect(toJson(wrapper)).toMatchSnapshot()
+    });
 });
+
+

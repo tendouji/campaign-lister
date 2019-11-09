@@ -8,8 +8,8 @@
 * */
 
 import React from 'react';
-import {connect} from 'react-redux';
-import styled, {css, StyledFunction} from "styled-components";
+import { connect } from 'react-redux';
+import styled, { css } from "styled-components";
 import ReactPaginate from 'react-paginate';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDotCircle } from "@fortawesome/free-solid-svg-icons/faDotCircle";

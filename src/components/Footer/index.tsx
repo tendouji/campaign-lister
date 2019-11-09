@@ -1,12 +1,13 @@
 import React, { ReactElement } from 'react';
 import styled from 'styled-components';
 import { colors, layout, styles } from "../../constants/ui";
+import { footerString } from "../../constants/text";
 
 
 export const Footer = (): ReactElement => (<>
     <PadWrapper />
     <FooterWrapper className="footer">
-        <span>&copy; {(new Date()).getFullYear()} Chan Wan / CR8 Campaign</span>
+        <span>{footerString((new Date()).getFullYear())}</span>
     </FooterWrapper>
 </>);
 
