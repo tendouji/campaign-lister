@@ -851,6 +851,7 @@ exports[`<DateSelector /> renders without crashing 1`] = `
                 Click 
                 <a
                   href="#"
+                  onClick={[Function]}
                 >
                   here
                 </a>

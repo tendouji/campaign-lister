@@ -25,8 +25,6 @@ class SnackBar extends Component<SnackBarProps, {}> {
         if(!!close) close();
     };
 
-    componentDidMount() { }
-
     componentDidUpdate(prevProps: SnackBarProps) {
         const { show } = this.props;
 
@@ -60,6 +58,8 @@ class SnackBar extends Component<SnackBarProps, {}> {
         )
     }
 }
+
+export default SnackBar;
 
 
 const closeSize = '20px';
@@ -102,6 +102,3 @@ const SnackBarWrapper = styled.div`
         }
     }
 `;
-
-
-export default SnackBar;

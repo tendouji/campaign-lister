@@ -15,7 +15,8 @@ describe('<App />', () => {
         setSearchKey: jest.fn(),
         storeCampaignData: jest.fn(),
         appState: {
-            snackBarDisplay: {}
+            snackBarDisplay: {},
+            modalPopupDisplay: {}
         }
     };
 

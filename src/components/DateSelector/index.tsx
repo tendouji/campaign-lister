@@ -9,6 +9,14 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons/faTimes";
 import { colors, layout, styles } from '../../constants/ui';
 import { setSnackBarDisplay, setDateRange } from "../../actions";
 import { DateRangeData, ReducerStateData, SnackBarData } from '../../models';
+import {
+    endDateLabel,
+    endDatePlaceholder,
+    errorMessage,
+    startDateLabel,
+    startDatePlaceholder,
+    todayButtonText
+} from "../../constants/text";
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -53,7 +61,7 @@ export class DateSelector extends React.Component<DateSelectorProps, any> {
             const { setSnackBarDisplay } = this.props;
             setSnackBarDisplay({
                 show: true,
-                message: 'Start date cannot be later than end date.'
+                message: errorMessage.startDateEarlier
             });
             return;
         }
@@ -97,14 +105,22 @@ export class DateSelector extends React.Component<DateSelectorProps, any> {
             <DateSelectorWrapper className="date-selector">
                 <div className="date-area">
                     <div className="date-col start-date">
-                        <div className="label">Start Date</div>
+                        <div className="label">{startDateLabel}</div>
                         <DatePicker
                             id="startDatePicker"
                             selected={startDate}
                             onChange={(date: Date) => this.setDate(date, 'startDate')}
-                            placeholderText='Select your start date'
+                            placeholderText={startDatePlaceholder}
+                            disabledKeyboardNavigation
                             popperPlacement="bottom"
-                            todayButton="Today"
+                            popperModifiers={{
+                                preventOverflow: {
+                                    enabled: true,
+                                    escapeWithReference: false,
+                                    boundariesElement: "viewport"
+                                }
+                            }}
+                            todayButton={todayButtonText}
                             className="datepicker-input"
                         />
                     </div>
@@ -112,15 +128,23 @@ export class DateSelector extends React.Component<DateSelectorProps, any> {
                         <FontAwesomeIcon icon={faArrowsAltH} />
                     </div>
                     <div className="date-col end-date">
-                        <div className="label">End Date</div>
+                        <div className="label">{endDateLabel}</div>
                         <DatePicker
                             id="endDatePicker"
                             selected={endDate < startDate ? startDate : endDate}
                             onChange={(date: Date) => this.setDate(date, 'endDate')}
                             minDate={startDate}
-                            placeholderText='Select your end date'
+                            placeholderText={endDatePlaceholder}
+                            disabledKeyboardNavigation
                             popperPlacement="bottom"
-                            todayButton="Today"
+                            popperModifiers={{
+                                preventOverflow: {
+                                    enabled: true,
+                                    escapeWithReference: false,
+                                    boundariesElement: "viewport"
+                                }
+                            }}
+                            todayButton={todayButtonText}
                             className="datepicker-input"
                         />
                     </div>
@@ -182,6 +206,7 @@ const DateSelectorWrapper = styled.div`
     
     & .react-datepicker__triangle {
         left: 50%;
+        display: none;
     }
     
     & .react-datepicker__input-container {

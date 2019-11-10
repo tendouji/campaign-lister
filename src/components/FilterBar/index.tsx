@@ -22,6 +22,7 @@ export const FilterBar = ({ disabled }: FilterBarProps = { disabled: true }): JS
     </FilterBarWrapper>
 );
 
+
 const datePanelWidth: string = '23em';
 
 const FilterBarWrapper = styled.div`

@@ -20,8 +20,50 @@
 </head>
 
 <body>
-<noscript>You need to enable JavaScript to run this app.</noscript>
-<div id="root"></div>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <div id="help" style="display:none">
+        <div class="help">
+            A single Campaign data has the following properties:<br />
+            <code>
+                {<br />
+                <span class="tab"></span>name: string,<br />
+                <span class="tab"></span>startDate: string (format: "MM/DD/YYYY"),<br />
+                <span class="tab"></span>endDate: string (format: "MM/DD/YYYY"),<br />
+                <span class="tab"></span>budget: number<br />
+                }
+            </code>
+            <div class="note">
+                Kindly take note the property keys to be in <i>lowerCamelCase</i> format.
+            </div>
+            <h3>AddCampaigns([campaignData])</h3>
+            To add Campaign record, this app exposes a global method for your convenience.<br />
+            You can input the method in the browser's Developer Tools Console tab.<br />
+            <h4>Arguments</h4>
+            <code>
+                [campaignData] <i>required</i> An array of CampaignData to add / prepend to current data.<br /><br />
+                campaignData<br />
+                {<br />
+                <span class="tab"></span>name: string,<br />
+                <span class="tab"></span>startDate: string (format: "MM/DD/YYYY"),<br />
+                <span class="tab"></span>endDate: string (format: "MM/DD/YYYY"),<br />
+                <span class="tab"></span>budget: number<br />
+                }
+            </code>
+            <h4>Samples</h4>
+            <code>
+                AddCampaigns([{name: "Campaign AAA 1", startDate: "01/15/2018"), endDate: "06/30/2018"), budget: 39780},
+                {name: "Campaign AAA 2", startDate: "03/28/2018"), endDate: "02/28/2019"), budget: 39780},
+                {name: "Campaign CCC", startDate: "09/01/2019"), endDate: "04/30/2020"), budget: 39780}]);
+            </code>
+            <div class="note">
+                There is no <i>id</i> property as the app will make use of Array index key as record <i>id</i> for auto increment.
+            </div>
+            <div class="note">
+                For each call of the method, the array data will be appended to the existing list.
+            </div>
+        </div>
+    </div>
     <script>
         window.AddCampaignsEventName = window.AddCampaignsEventName || 'AddCampaignsEvent';
 
@@ -70,25 +112,28 @@
             EventQueue.publish(AddCampaignsEventName, data);
         };
 
+        window.GetHelp = window.GetHelp || function() {
+            var helpElm = document.getElementById('help');
+            return helpElm.innerHTML;
+        };
 
         /*
         setTimeout(() => AddCampaigns(
             [
-                {"id":1,"name":"Divavuqqq","startDate":"9/19/2019","endDate":"10/9/2019","budget":88377},
-                {"id":2,"name":"Jaxspan","startDate":"11/1/2019","endDate":"2/21/2020", "budget":608715},
-                {"id":3,"name":"Miboo","startDate":"11/1/2019","endDate":"6/20/2020","budget":239507},
-                {"id":4,"name":"Trilithqqq","startDate":"8/25/2019","endDate":"10/30/2019", "budget":179838},
-                {"id":5,"name":"Layo","startDate":"11/28/2017","endDate":"3/10/2018","budget":837850},
-                {"id":6,"name":"Photojam","startDate":"7/25/2017","endDate":"6/23/2017", "budget":858131},
-                {"id":7,"name":"Blogtag","startDate":"6/07/2019","endDate":"12/15/2019","budget":109078},
-                {"id":8,"name":"Rhyzio","startDate":"10/13/2017","endDate":"1/25/2018", "budget":272552},
-                {"id":9,"name":"Zoomcastqqq","startDate":"9/6/2017","endDate":"11/10/2017", "budget":301919},
-                {"id":10,"name":"Realbridge","startDate":"3/5/2020","endDate":"10/2/2020 ","budget":505602},
-                {"id":10,"name":"Boombastic","startDate":"3/5/2020","endDate":"10/2/2020 ","budget":505602}
+                {"name":"Divavuqqq","startDate":"9/19/2019","endDate":"10/9/2019","budget":88377},
+                {"name":"Jaxspan","startDate":"11/1/2019","endDate":"2/21/2020", "budget":608715},
+                {"name":"Miboo","startDate":"11/1/2019","endDate":"6/20/2020","budget":239507},
+                {"name":"Trilithqqq","startDate":"8/25/2019","endDate":"10/30/2019", "budget":179838},
+                {"name":"Layo","startDate":"11/28/2017","endDate":"3/10/2018","budget":837850},
+                {"name":"Photojam","startDate":"7/25/2017","endDate":"6/23/2017", "budget":858131},
+                {"name":"Blogtag","startDate":"6/07/2019","endDate":"12/15/2019","budget":109078},
+                {"name":"Rhyzio","startDate":"10/13/2017","endDate":"1/25/2018", "budget":272552},
+                {"name":"Zoomcastqqq","startDate":"9/6/2017","endDate":"11/10/2017", "budget":301919},
+                {"name":"Realbridge","startDate":"3/5/2020","endDate":"10/2/2020 ","budget":505602},
+                {"name":"Boombastic","startDate":"3/5/2020","endDate":"10/2/2020 ","budget":505602}
             ]
         ), 1000);
         */
-
     </script>
 </body>
 </html>

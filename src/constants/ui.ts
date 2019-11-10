@@ -44,6 +44,7 @@ const styles = {
         height: ${layout.filterBarHeight};
         padding: 0;
         border: 0;
+        background-color: transparent;
         font-size: ${layout.fontSizeXLarge};
         cursor: pointer;
         

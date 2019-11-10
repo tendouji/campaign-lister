@@ -1,8 +1,8 @@
 import {
     SET_SEARCH_KEY,
     SET_DATE_RANGE,
-    SET_IS_LOADING,
     SET_SNACKBAR_DISPLAY,
+    SET_MODALPOPUP_DISPLAY,
 } from '../constants/actionType';
 import { ActionData, AppStateData } from "../models";
 
@@ -16,6 +16,11 @@ const defaultAppState: AppStateData = {
     },
     snackBarDisplay: {
         show: false,
+        message: ''
+    },
+    modalPopupDisplay: {
+        show: false,
+        title: '',
         message: ''
     }
 };
@@ -35,16 +40,19 @@ export const appStateReducer = (state = defaultAppState, action: ActionData) => 
                     ...action.data
                 }
             };
-        case SET_IS_LOADING:
-            return {
-                ...state,
-                isLoading: action.data
-            };
         case SET_SNACKBAR_DISPLAY:
             return {
                 ...state,
                 snackBarDisplay: {
                     ...state.snackBarDisplay,
+                    ...action.data
+                }
+            };
+        case SET_MODALPOPUP_DISPLAY:
+            return {
+                ...state,
+                modalPopupDisplay: {
+                    ...state.modalPopupDisplay,
                     ...action.data
                 }
             };

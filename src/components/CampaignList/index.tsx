@@ -1,6 +1,7 @@
 /*
 * Todo:
-* - add help
+* - change method to non arrow
+* - refactor text
 * */
 
 import React from 'react';
@@ -17,19 +18,26 @@ import {
     styles
 } from '../../constants/ui';
 import {
-    setDateRange,
+    setDateRange, setModalPopupDisplay,
     setSearchKey,
     setSnackBarDisplay
 } from "../../actions";
 import {
     CampaignData,
     CampaignStatus,
-    DateRangeData,
+    DateRangeData, ModalPopupData,
     ReducerStateData,
     SnackBarData
 } from '../../models';
 import { config } from "../../constants/config";
 import { beautifyDate, convertToCurrency } from "../../helpers";
+import {
+    campaignResultTitle,
+    legendTitle,
+    noResult, noResultInstruction,
+    searchNoResult,
+    searchNoResultInstruction
+} from "../../constants/text";
 
 
 interface StatusDotProps {
@@ -193,7 +201,7 @@ export class CampaignList extends React.Component<CampaignListProps, CampaignLis
         }
 
         if(_campaigns.length === 0) {
-            return this.noCampaign('rateRange');
+            return this.noCampaign('dateRange');
         }
 
         return _campaigns.filter((item: CampaignData) => {
@@ -274,6 +282,12 @@ export class CampaignList extends React.Component<CampaignListProps, CampaignLis
         this.setState({ curPageCampaigns });
     };
 
+    onHelpClick = (e: React.MouseEvent) => {
+        e.preventDefault();
+        const { setModalPopupDisplay } = this.props;
+        setModalPopupDisplay({ show: true });
+    };
+
     render() {
         const { appState } = this.props;
         const { curDate, curPageCampaigns } = this.state;
@@ -283,12 +297,12 @@ export class CampaignList extends React.Component<CampaignListProps, CampaignLis
             <>
                 <CampaignHeaderWrapper className="campaign-header">
                     <div className="title">
-                        <h2>Campaign list</h2>
+                        <h2>{campaignResultTitle}</h2>
                         <div className="description"
                             dangerouslySetInnerHTML={{__html: this.generateHeaderDescription()}} />
                     </div>
                     <div className="legend">
-                        <div className="legend-title">Status Type</div>
+                        <div className="legend-title">{legendTitle}</div>
                         <div className="legend-row">
                             <div className="col">
                                 <div className="label">{ CampaignStatus.Ongoing }</div>
@@ -361,11 +375,13 @@ export class CampaignList extends React.Component<CampaignListProps, CampaignLis
                                                 !!appState.dateRange.endDate
                                             )
                                         )) ? (<>
-                                            <div className="highlight">No campaigns found!</div>
-                                            Please try again.</>
+                                            <div className="highlight">{searchNoResult}</div>
+                                            {searchNoResultInstruction}</>
                                         ) : (<>
-                                            <div className="highlight">No campaigns available.</div>
-                                            Click <a href="#">here</a> to learn how to add new campaigns via Web Development tools.</>
+                                            <div className="highlight">{noResult}</div>
+                                            {noResultInstruction.beforeLink}
+                                            <a onClick={(e) => this.onHelpClick(e)} href="#">{noResultInstruction.linkLabel}</a>
+                                            {noResultInstruction.afterLink}</>
                                         )}
                                     </td>
                                 </tr>
@@ -406,6 +422,7 @@ const mapDispatchToProps = (dispatch: any) => ({
     setDateRange: (data: DateRangeData) => dispatch(setDateRange(data)),
     setSearchKey: (data: string) => dispatch(setSearchKey(data)),
     setSnackBarDisplay: (data: SnackBarData) => dispatch(setSnackBarDisplay(data)),
+    setModalPopupDisplay: (data: ModalPopupData) => dispatch(setModalPopupDisplay(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CampaignList);

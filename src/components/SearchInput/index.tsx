@@ -8,6 +8,7 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes'
 import { setSearchKey, setSnackBarDisplay } from "../../actions";
 import { ReducerStateData, SnackBarData } from '../../models';
 import { config } from "../../constants/config";
+import { errorMessage, searchBarPlaceholder } from "../../constants/text";
 
 
 type SearchInputState = {
@@ -52,7 +53,7 @@ export class SearchInput extends React.Component<any, SearchInputState> {
                     const { setSnackBarDisplay } = this.props;
                     setSnackBarDisplay({
                         show: true,
-                        message: `Search length is too short. Please enter at least ${config.minSearchLength} characters`
+                        message: errorMessage.searchLengthShort(config.minSearchLength)
                     });
                 }
                 return;
@@ -97,7 +98,7 @@ export class SearchInput extends React.Component<any, SearchInputState> {
                     aria-label="Search Input"
                     autoComplete="off"
                     spellCheck={false}
-                    placeholder="Search Campaign"
+                    placeholder={searchBarPlaceholder}
                     onChange={this.onSearchKeyChange}
                     value={searchKeyValue}
                 />

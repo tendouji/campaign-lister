@@ -33,7 +33,7 @@ exports[`<DateSelector /> renders without crashing based on mock date redux 1`] 
           "componentStyle": ComponentStyle {
             "componentId": "sc-bdVaJa",
             "isStatic": false,
-            "lastClassName": "hOtDNm",
+            "lastClassName": "gcLpFk",
             "rules": Array [
               "
     display: flex;
@@ -81,6 +81,7 @@ exports[`<DateSelector /> renders without crashing based on mock date redux 1`] 
         height: 4.5rem;
         padding: 0;
         border: 0;
+        background-color: transparent;
         font-size: 1.5rem;
         cursor: pointer;
         
@@ -97,6 +98,7 @@ exports[`<DateSelector /> renders without crashing based on mock date redux 1`] 
     
     & .react-datepicker__triangle {
         left: 50%;
+        display: none;
     }
     
     & .react-datepicker__input-container {
@@ -140,7 +142,7 @@ exports[`<DateSelector /> renders without crashing based on mock date redux 1`] 
       forwardedRef={null}
     >
       <div
-        className="sc-bdVaJa hOtDNm date-selector"
+        className="sc-bdVaJa gcLpFk date-selector"
       >
         <div
           className="date-area"
@@ -159,7 +161,7 @@ exports[`<DateSelector /> renders without crashing based on mock date redux 1`] 
               dateFormat="MM/dd/yyyy"
               dateFormatCalendar="LLLL yyyy"
               disabled={false}
-              disabledKeyboardNavigation={false}
+              disabledKeyboardNavigation={true}
               dropdownMode="scroll"
               id="startDatePicker"
               inlineFocusSelectedMonth={false}
@@ -177,6 +179,15 @@ exports[`<DateSelector /> renders without crashing based on mock date redux 1`] 
               onSelect={[Function]}
               onYearChange={[Function]}
               placeholderText="Select your start date"
+              popperModifiers={
+                Object {
+                  "preventOverflow": Object {
+                    "boundariesElement": "viewport",
+                    "enabled": true,
+                    "escapeWithReference": false,
+                  },
+                }
+              }
               popperPlacement="bottom"
               preventOpenOnFocus={false}
               previousMonthButtonLabel="Previous Month"
@@ -204,7 +215,7 @@ exports[`<DateSelector /> renders without crashing based on mock date redux 1`] 
                     "preventOverflow": Object {
                       "boundariesElement": "viewport",
                       "enabled": true,
-                      "escapeWithReference": true,
+                      "escapeWithReference": false,
                     },
                   }
                 }
@@ -331,7 +342,7 @@ exports[`<DateSelector /> renders without crashing based on mock date redux 1`] 
               dateFormat="MM/dd/yyyy"
               dateFormatCalendar="LLLL yyyy"
               disabled={false}
-              disabledKeyboardNavigation={false}
+              disabledKeyboardNavigation={true}
               dropdownMode="scroll"
               id="endDatePicker"
               inlineFocusSelectedMonth={false}
@@ -350,6 +361,15 @@ exports[`<DateSelector /> renders without crashing based on mock date redux 1`] 
               onSelect={[Function]}
               onYearChange={[Function]}
               placeholderText="Select your end date"
+              popperModifiers={
+                Object {
+                  "preventOverflow": Object {
+                    "boundariesElement": "viewport",
+                    "enabled": true,
+                    "escapeWithReference": false,
+                  },
+                }
+              }
               popperPlacement="bottom"
               preventOpenOnFocus={false}
               previousMonthButtonLabel="Previous Month"
@@ -377,7 +397,7 @@ exports[`<DateSelector /> renders without crashing based on mock date redux 1`] 
                     "preventOverflow": Object {
                       "boundariesElement": "viewport",
                       "enabled": true,
-                      "escapeWithReference": true,
+                      "escapeWithReference": false,
                     },
                   }
                 }

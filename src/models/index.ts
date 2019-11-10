@@ -11,6 +11,12 @@ export type SnackBarData = {
     message?: string;
 }
 
+export type ModalPopupData = {
+    show: boolean,
+    title?: string,
+    message?: string;
+}
+
 export type DateRangeData = {
     startDate: Date | null;
     endDate: Date | null;
