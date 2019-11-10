@@ -47,4 +47,4 @@ NOTE: For simplicity sake, there is no `id` property as the app will make use of
 NOTE: For each call of the method, the array data will be appended to the existing list.
 
 ### Demo URL
-Visit [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Visit [https://tendouji.github.io/campaign-lister/](https://tendouji.github.io/campaign-lister/) to view it in the browser.
