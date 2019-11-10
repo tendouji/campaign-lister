@@ -166,6 +166,8 @@ export class CampaignList extends React.Component<CampaignListProps, CampaignLis
     }
 
     filterCampaignsBySearchKey = (searchKey: string) => {
+        this.setState({ curPage: 0 });
+
         const { filteredCampaigns } = this.state;
         const { appState, campaigns } = this.props;
         let _campaigns: CampaignData[] = [];
@@ -189,6 +191,8 @@ export class CampaignList extends React.Component<CampaignListProps, CampaignLis
     };
 
     filterCampaignsByDateRange = (startDate: Date, endDate: Date) => {
+        this.setState({ curPage: 0 });
+
         const { filteredCampaigns } = this.state;
         const { appState, campaigns } = this.props;
         let _campaigns: CampaignData[] = [];
@@ -400,6 +404,7 @@ export class CampaignList extends React.Component<CampaignListProps, CampaignLis
                             pageCount={this.state.pageCount}
                             marginPagesDisplayed={2}
                             pageRangeDisplayed={5}
+                            forcePage={this.state.curPage}
                             onPageChange={this.onPaginationClick}
                             containerClassName={'pagination'}
                             activeClassName={'active'}
